@@ -1,7 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import QualityRadar from './components/QualityRadar';
+import QualityRadar, { type QualityRadarScore } from './components/QualityRadar';
+
+interface GeneratedArtifact {
+  title: string;
+  solution: string;
+  components: Array<{
+    name: string;
+    function: string;
+  }>;
+  quality: QualityRadarScore;
+}
 
 const domains = [
   'software',
@@ -21,7 +31,7 @@ export default function HomePage() {
   const [domain, setDomain] = useState(domains[0]);
   const [constraints, setConstraints] = useState('');
   const [aestheticDirection, setAestheticDirection] = useState('');
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<GeneratedArtifact | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
@@ -36,7 +46,7 @@ export default function HomePage() {
         aestheticDirection
       })
     });
-    const data = await response.json();
+    const data = (await response.json()) as GeneratedArtifact;
     setResult(data);
     setLoading(false);
   };
@@ -114,7 +124,7 @@ export default function HomePage() {
             <div className="stack">
               <h3 className="section-title">Components</h3>
               <ul className="list">
-                {result.components.map((component: any) => (
+                {result.components.map((component) => (
                   <li key={component.name} className="list-item">
                     <strong className="accent">{component.name}</strong>
                     <p className="subtitle">{component.function}</p>

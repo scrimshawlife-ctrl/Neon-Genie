@@ -9,15 +9,17 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-interface QualityRadarProps {
-  score: {
-    ontological_depth: { value: number };
-    novelty: { value: number };
-    viability: { value: number };
-    zeitgeist_alignment: { value: number };
-    generative_potential: { value: number };
-    composite: number;
-  };
+export interface QualityRadarScore {
+  ontological_depth: { value: number };
+  novelty: { value: number };
+  viability: { value: number };
+  zeitgeist_alignment: { value: number };
+  generative_potential: { value: number };
+  composite: number;
+}
+
+export interface QualityRadarProps {
+  score: QualityRadarScore;
 }
 
 export default function QualityRadar({ score }: QualityRadarProps) {
