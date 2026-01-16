@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  neon-genie:
+    build:
+      context: ../..
+      dockerfile: deployment/orin-nano/Dockerfile
+    image: aal/neon-genie:latest
+    container_name: neon-genie
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MODE=standalone
+    volumes:
+      - ./data:/app/.neon-genie-corpus
+      - ./logs:/app/logs
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
