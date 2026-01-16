@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop, 'claude/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Test on Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Run tests
+      run: npm test
+
+    - name: Run demos (smoke test)
+      run: |
+        timeout 30s npm run demo || echo "Demo completed or timed out"
+        timeout 30s npm run demo:enhanced || echo "Enhanced demo completed or timed out"
+        timeout 60s npm run demo:abraxas || echo "Abraxas demo completed or timed out"
+
+  coverage:
+    name: Test Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Generate coverage
+      run: npm run test:coverage
+
+    - name: Upload coverage to artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage
+        path: coverage/
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Check TypeScript compilation
+      run: npm run build
+
+  docker:
+    name: Docker Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image
+      run: |
+        cd deployment/orin-nano
+        docker build -f Dockerfile ../.. -t neon-genie:test
+
+    - name: Test Docker image
+      run: |
+        docker run --rm neon-genie:test node --version

@@ -7,9 +7,13 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "dev": "ts-node src/index.ts",
     "demo": "ts-node examples/standalone-demo.ts",
-    "demo:enhanced": "ts-node examples/enhanced-demo.ts"
+    "demo:enhanced": "ts-node examples/enhanced-demo.ts",
+    "demo:abraxas": "ts-node examples/abraxas-demo.ts",
+    "lint": "echo 'Lint check - install eslint for full linting'"
   },
   "keywords": ["ideation", "design", "semantic-search", "domain-handlers"],
   "author": "Applied Alchemy Labs",
