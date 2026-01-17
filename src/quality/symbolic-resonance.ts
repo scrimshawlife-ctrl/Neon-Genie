@@ -132,7 +132,7 @@ export class SymbolicResonanceScorer {
           archetypes.integration
         ]
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         numerology: 'Analysis error',
         timing: 'Analysis error',

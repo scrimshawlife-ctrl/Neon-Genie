@@ -27,7 +27,7 @@ export class BrandsDomainHandler {
     } clarity, and visual motifs that speak to ${characteristics.targetAudience}.`;
   }
 
-  generateComponents(characteristics: BrandCharacteristics): Component[] {
+  generateComponents(_characteristics: BrandCharacteristics): Component[] {
     return [
       {
         name: 'Visual Identity System',
