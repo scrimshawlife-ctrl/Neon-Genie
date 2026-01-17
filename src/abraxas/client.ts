@@ -14,8 +14,10 @@
  * - Tarot divination
  * - I-Ching consultation
  * - Timing optimization
- * - Runic encoding
+ * - Runic encoding and divination
  */
+
+import { RuneSystem, RuneCast, RuneReading } from './runes';
 
 // ============================================================================
 // Configuration Interfaces
@@ -134,6 +136,7 @@ export class AbraxasClient {
   private config: AbraxasConfig;
   private connected: boolean = false;
   private useMockMode: boolean = true;
+  private runeSystem: RuneSystem;
 
   constructor(config: AbraxasConfig) {
     this.config = {
@@ -144,6 +147,7 @@ export class AbraxasClient {
       enableTimingOptimization: true,
       ...config
     };
+    this.runeSystem = new RuneSystem();
   }
 
   /**
@@ -546,25 +550,36 @@ export class AbraxasClient {
   }
 
   private mockRunes(text: string): RuneEncoding {
-    const runeMap: { [key: string]: string } = {
-      'a': 'ᚨ', 'b': 'ᛒ', 'c': 'ᚲ', 'd': 'ᛞ', 'e': 'ᛖ', 'f': 'ᚠ',
-      'g': 'ᚷ', 'h': 'ᚺ', 'i': 'ᛁ', 'j': 'ᛃ', 'k': 'ᚲ', 'l': 'ᛚ',
-      'm': 'ᛗ', 'n': 'ᚾ', 'o': 'ᛟ', 'p': 'ᛈ', 'q': 'ᚲ', 'r': 'ᚱ',
-      's': 'ᛊ', 't': 'ᛏ', 'u': 'ᚢ', 'v': 'ᚹ', 'w': 'ᚹ', 'x': 'ᚲᛊ',
-      'y': 'ᛃ', 'z': 'ᛉ', ' ': ' '
-    };
-
-    const runes = text
-      .toLowerCase()
-      .split('')
-      .map(char => runeMap[char] || char)
-      .join('');
+    const runes = this.runeSystem.toPhoneticRunes(text);
+    const reading = this.runeSystem.getReading(text);
 
     return {
       runes,
       transliteration: text,
-      meanings: ['Protection', 'Manifestation', 'Clarity'],
-      divination: 'The runes suggest a time of transformation and new beginnings'
+      meanings: reading.primary.keywords,
+      divination: reading.message
     };
+  }
+
+  /**
+   * Cast runes for divination (enhanced method)
+   */
+  async castRunes(question: string, spread: 'single' | 'three' | 'five' = 'three'): Promise<RuneCast> {
+    if (!this.useMockMode && this.connected) {
+      throw new Error('Real API not implemented');
+    }
+
+    return this.runeSystem.castRunes(question, spread);
+  }
+
+  /**
+   * Get a rune reading for a concept (enhanced method)
+   */
+  async getRuneReading(text: string): Promise<RuneReading> {
+    if (!this.useMockMode && this.connected) {
+      throw new Error('Real API not implemented');
+    }
+
+    return this.runeSystem.getReading(text);
   }
 }

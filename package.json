@@ -13,6 +13,7 @@
     "demo": "ts-node examples/standalone-demo.ts",
     "demo:enhanced": "ts-node examples/enhanced-demo.ts",
     "demo:abraxas": "ts-node examples/abraxas-demo.ts",
+    "demo:runes": "ts-node examples/runes-demo.ts",
     "lint": "echo 'Lint check - install eslint for full linting'"
   },
   "keywords": ["ideation", "design", "semantic-search", "domain-handlers"],

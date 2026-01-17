@@ -14,6 +14,12 @@ export { AbraxasClient, AbraxasConfig } from './abraxas/client';
 export { SymbolicResonanceScorer } from './quality/symbolic-resonance';
 export { EnhancedQualityScorer } from './quality/enhanced-scorer';
 
+// Runes integration
+export { RuneSystem, ELDER_FUTHARK } from './abraxas/runes';
+export { RuneIdentifier } from './abraxas/rune-identifier';
+export type { Rune, RuneCast, RuneReading, DrawnRune } from './abraxas/runes';
+export type { RuneSignature } from './abraxas/rune-identifier';
+
 // Types
 export * from './types/artifact';
 export * from './types/domain';
