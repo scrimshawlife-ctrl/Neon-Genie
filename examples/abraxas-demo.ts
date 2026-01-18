@@ -194,7 +194,7 @@ async function main() {
 }
 
 function displayQualityScore(score: QualityScore, includeSymbolic: boolean) {
-  const dimensions = [
+  const dimensions: Array<{ name: string; key: keyof QualityScore }> = [
     { name: 'Ontological Depth', key: 'ontological_depth' },
     { name: 'Novelty', key: 'novelty' },
     { name: 'Viability', key: 'viability' },
@@ -208,10 +208,13 @@ function displayQualityScore(score: QualityScore, includeSymbolic: boolean) {
 
   console.log('Dimensions:');
   dimensions.forEach(dim => {
-    const value = score[dim.key].value;
-    const percentage = (value * 100).toFixed(1);
-    const bar = createBar(value);
-    console.log(`  ${dim.name.padEnd(25)} ${bar} ${percentage}%`);
+    const dimension = score[dim.key];
+    if (dimension && typeof dimension === 'object' && 'value' in dimension) {
+      const value = dimension.value;
+      const percentage = (value * 100).toFixed(1);
+      const bar = createBar(value);
+      console.log(`  ${dim.name.padEnd(25)} ${bar} ${percentage}%`);
+    }
   });
 
   console.log();
