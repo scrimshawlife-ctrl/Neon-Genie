@@ -18,3 +18,6 @@ export { EnhancedQualityScorer } from './quality/enhanced-scorer';
 export * from './types/artifact';
 export * from './types/domain';
 export * from './types/quality';
+
+// AAL/ABX-Runes Overlay Bridge
+export * from './overlay';

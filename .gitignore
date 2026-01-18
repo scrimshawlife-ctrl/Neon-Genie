@@ -9,6 +9,8 @@ dist/
 # Corpus data
 corpus/
 .neon-genie-corpus/
+demo-corpus/
+.test-corpus-*/
 
 # Logs
 logs/
