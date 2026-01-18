@@ -4,6 +4,9 @@
   "description": "Divinatory ideation engine with advanced domain handlers and semantic search",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "neon-genie-overlay": "dist/overlay/cli.js"
+  },
   "scripts": {
     "build": "tsc",
     "test": "jest",
