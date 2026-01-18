@@ -89,6 +89,9 @@ jobs:
     - name: Check TypeScript compilation
       run: npm run build
 
+    - name: Run ESLint
+      run: npm run lint
+
   docker:
     name: Docker Build
     runs-on: ubuntu-latest
