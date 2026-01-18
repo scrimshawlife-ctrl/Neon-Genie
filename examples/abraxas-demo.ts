@@ -8,7 +8,7 @@
 import { NeonGenie } from '../src/core/genie';
 import { EnhancedQualityScorer } from '../src/quality/enhanced-scorer';
 import { AbraxasClient } from '../src/abraxas/client';
-import { IdeaArtifact } from '../src/types/artifact';
+import { QualityScore } from '../src/types/quality';
 
 async function main() {
   console.log('='.repeat(80));
@@ -193,7 +193,7 @@ async function main() {
   console.log('━'.repeat(80));
 }
 
-function displayQualityScore(score: any, includeSymbolic: boolean) {
+function displayQualityScore(score: QualityScore, includeSymbolic: boolean) {
   const dimensions = [
     { name: 'Ontological Depth', key: 'ontological_depth' },
     { name: 'Novelty', key: 'novelty' },

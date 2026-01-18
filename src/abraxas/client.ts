@@ -159,7 +159,7 @@ export class AbraxasClient {
 
       console.log('⚠️  Abraxas API not available, using mock implementations');
       return false;
-    } catch (error) {
+    } catch (_error) {
       this.connected = false;
       this.useMockMode = true;
       return false;
