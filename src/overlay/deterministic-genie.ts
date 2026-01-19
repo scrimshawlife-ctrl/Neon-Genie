@@ -13,7 +13,6 @@ import { NeonGenie, type GenieConfig } from '../core/genie';
 import type { IdeaArtifact, IdeationPrompt } from '../types/artifact';
 import type { OverlayProvenance } from './types';
 import { generateArtifactId, deriveSeed, validateTimestamp } from './deterministic';
-import { createProvenance } from '../core/provenance';
 
 /**
  * Extended config with overlay provenance

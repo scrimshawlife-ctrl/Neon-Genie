@@ -17,10 +17,25 @@ import type {
   OverlayErrorResponse
 } from '../../src/overlay/types';
 import type { IdeaArtifact } from '../../src/types/artifact';
+import type { QualityScore } from '../../src/types/quality';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
 const TEST_CORPUS_PATH = path.join(__dirname, '../../.test-corpus-bridge');
+
+// Helper to create mock quality score for tests
+const createMockQualityScore = (): QualityScore => ({
+  ontological_depth: { value: 0.8, rationale: 'test' },
+  novelty: { value: 0.7, rationale: 'test' },
+  viability: { value: 0.75, rationale: 'test' },
+  zeitgeist_alignment: { value: 0.6, rationale: 'test' },
+  generative_potential: { value: 0.5, rationale: 'test' },
+  composite: 0.7,
+  threshold: 0.5,
+  passed: true,
+  tier: 'accept',
+  breakdown: { strengths: [], weaknesses: [], refinements: [] }
+});
 
 describe('OverlayBridge', () => {
   beforeAll(async () => {
@@ -44,7 +59,7 @@ describe('OverlayBridge', () => {
 
   describe('Request Validation', () => {
     it('should reject request without operation', async () => {
-      const bridge = new OverlayBridge({ corpusPath: TEST_CORPUS_PATH });
+      const _bridge = new OverlayBridge({ corpusPath: TEST_CORPUS_PATH });
 
       // Mock stdin with invalid request
       const invalidRequest = {
@@ -133,7 +148,7 @@ describe('OverlayBridge', () => {
             interface: 'test',
             ecosystem_mapping: []
           },
-          quality: {} as any,
+          quality: createMockQualityScore(),
           provenance: {
             origin: 'test',
             generator: 'test',
@@ -259,7 +274,9 @@ describe('OverlayBridge', () => {
       const bridge2 = new OverlayBridge({ corpusPath: TEST_CORPUS_PATH });
 
       // Access private dispatch method via reflection (for testing)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const dispatch1 = (bridge1 as any).dispatch.bind(bridge1);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const dispatch2 = (bridge2 as any).dispatch.bind(bridge2);
 
       const response1 = await dispatch1(request);
@@ -291,8 +308,9 @@ describe('OverlayBridge', () => {
           timestamp_iso: '2025-01-18T12:00:00Z'
         },
         payload: {}
-      } as any;
+      } as unknown as GenerateRequest;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const dispatch = (bridge as any).dispatch.bind(bridge);
       const response = await dispatch(invalidRequest);
 
@@ -315,8 +333,9 @@ describe('OverlayBridge', () => {
         operation: 'invalid',
         provenance,
         payload: {}
-      } as any;
+      } as unknown as GenerateRequest;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const dispatch = (bridge as any).dispatch.bind(bridge);
       const response = await dispatch(invalidRequest);
 
