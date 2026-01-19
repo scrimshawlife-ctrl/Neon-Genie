@@ -39,6 +39,7 @@ describe('DeterministicNeonGenie', () => {
       expect(() => {
         new DeterministicNeonGenie({
           corpusPath: TEST_CORPUS_PATH
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any); // Intentionally missing provenance
       }).toThrow(/requires provenance/);
     });
@@ -285,7 +286,7 @@ describe('DeterministicNeonGenie', () => {
       // All artifacts must be identical
       const firstArtifact = artifacts[0];
 
-      artifacts.forEach((artifact, index) => {
+      artifacts.forEach((artifact, _index) => {
         expect(artifact.id).toBe(firstArtifact.id);
         expect(artifact.title).toBe(firstArtifact.title);
         expect(artifact.concept).toBe(firstArtifact.concept);
